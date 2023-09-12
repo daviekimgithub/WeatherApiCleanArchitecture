@@ -6,41 +6,71 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.weatherapp.ui.theme.WeatherAppTheme
+import androidx.compose.ui.graphics.toArgb
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.weatherapp.common.Route
+import com.example.weatherapp.screen.HomeScreen
+import com.example.weatherapp.screen.LocationsWeatherScreen
+import com.example.weatherapp.screen.ProgressBarScreen
+import com.example.weatherapp.screen.SelectWeatherLocation
+import com.example.weatherapp.ui.theme.blue70
+import com.example.weatherapp.viewmodel.LocationsWeatherViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val weatherViewModel by viewModel<LocationsWeatherViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WeatherAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+
+            val navController = rememberNavController()
+            window.statusBarColor = blue70.toArgb()
+            
+            LaunchedEffect(key1 = Unit) {
+                weatherViewModel.onAction(LocationsWeatherViewModel.Action.onFetchWeatherConditions)
             }
+
+            val state = weatherViewModel.weatherStates
+
+            if (state.isLoading) {
+                ProgressBarScreen()
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                
+                NavHost(
+                    navController = navController,
+                    startDestination = Route.Home.WeatherConditions
+                ) {
+                    composable(Route.Home.Home) {
+                        HomeScreen(
+                            navController = navController
+                        )
+                    }
+                    composable(Route.Home.WeatherConditions) {
+                        LocationsWeatherScreen(
+                            viewModel = weatherViewModel,
+                            navController = navController
+                        )
+                    }
+                    composable(Route.Home.SelectLocation) {
+                        SelectWeatherLocation(
+                            navController = navController
+                        )
+                    }
+                }
+
+            }
+
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    WeatherAppTheme {
-        Greeting("Android")
     }
 }

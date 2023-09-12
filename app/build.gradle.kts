@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.weatherapp"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -83,7 +83,11 @@ dependencies {
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-corosutines-android:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+
+    // load images from url
+    implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.2")
+    implementation("androidx.wear.compose:compose-material:1.2.0")
 
     // tests
     testImplementation("junit:junit:4.13.2")
