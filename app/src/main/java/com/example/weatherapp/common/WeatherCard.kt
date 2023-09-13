@@ -1,9 +1,9 @@
 package com.example.weatherapp.common
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,22 +15,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.chrisbanes.accompanist.coil.CoilImage
+import coil.annotation.ExperimentalCoilApi
 
-@Preview
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun WeatherCard(
-    url: String = "https://cdn2.iconfinder.com/data/icons/weather-color-2/500/weather-02-256.png",
-    icon: String = "SUN",
-    text: String = "47%",
-    description: String = "Humidity",
+    cardData: WeatherCardDataClass
 ) {
-    Surface(
+        val painter = painterResource(id = cardData.image)
+        Surface(
         shape = RoundedCornerShape(16.dp),
         color = Color(0xFFDAE1E7),
         modifier = Modifier
@@ -46,20 +45,24 @@ fun WeatherCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(){
-                CoilImage(
-                    data = url,
-                    contentDescription = description
+                Image(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .width(50.dp),
+                    painter = painter,
+                    contentDescription = cardData.description,
+                    contentScale = ContentScale.Crop
                 )
             }
             Text(
-                text = text,
+                text = cardData.text,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             )
             Text(
-                text = description,
+                text = cardData.description,
                 style = TextStyle(
                     fontSize = 16.sp,
                 )

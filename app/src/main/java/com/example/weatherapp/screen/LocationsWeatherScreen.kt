@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.weatherapp.R
 import com.example.weatherapp.common.WeatherCard
+import com.example.weatherapp.common.WeatherCardDataClass
 import com.example.weatherapp.viewmodel.LocationsWeatherViewModel
 
 @Composable
@@ -28,6 +29,46 @@ fun LocationsWeatherScreen(
 ) {
     val state = viewModel.weatherStates
     val scope = rememberCoroutineScope()
+    var dayOrNight: String = if (state.isDay == 1) "day" else "night"
+    var dayOrNightImg: Int = if (state.isDay == 1) R.drawable.day_mode else R.drawable.night
+    val weatherConditions = arrayOf(
+        WeatherCardDataClass(
+            image = if (state.isDay == 1) R.drawable.day_mode else R.drawable.night,
+            text = if (state.isDay == 1) "day" else "night",
+            description = "time"
+        ),
+        WeatherCardDataClass(
+            image = R.drawable.cloudy,
+            text = if (state.isDay == 1) "Cloudy" else "Clear",
+            description = "cloudy"
+        ),
+        WeatherCardDataClass(
+            image = R.drawable.humidity,
+            text = state.humidity.toString(),
+            description = "humidity"
+        ),
+        WeatherCardDataClass(
+            image = R.drawable.precipitation,
+            text = state.precipitation.toString(),
+            description = "precipitation"
+        ),
+        WeatherCardDataClass(
+            image = R.drawable.pressure_gauge,
+            text = state.pressure.toString(),
+            description = "pressure"
+        ),
+        WeatherCardDataClass(
+            image = R.drawable.temperature,
+            text = state.temperature.toString(),
+            description = "temperature"
+        ),
+        WeatherCardDataClass(
+            image = R.drawable.wind,
+            text = state.windKPH.toString(),
+            description = "wind speed"
+        ),
+        )
+
 
     Column(
         modifier = Modifier.padding(horizontal = 32.dp),
@@ -43,8 +84,8 @@ fun LocationsWeatherScreen(
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 128.dp)
         ) {
-            items(9) { photo ->
-                WeatherCard()
+            items(weatherConditions.size) { each ->
+                WeatherCard(weatherConditions[each])
             }
         }
     }

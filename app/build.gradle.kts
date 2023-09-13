@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.weatherapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.weatherapp"
@@ -86,8 +86,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
 
     // load images from url
-    implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.2")
-    implementation("androidx.wear.compose:compose-material:1.2.0")
+//    implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.2")
+//    implementation("androidx.wear.compose:compose-material:1.2.0")
+    implementation("io.coil-kt:coil-compose:1.3.2")
 
     // tests
     testImplementation("junit:junit:4.13.2")
